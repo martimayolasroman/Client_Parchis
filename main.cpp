@@ -1,83 +1,78 @@
 #include <stdlib.h>
 #include <iostream>
+#include <string>
+#include <SFML/Network.hpp>
 
 
-#include <SFML/Graphics.hpp>
-#include <cppconn/driver.h>
-#include <cppconn/exception.h>
+#define SERVER_PORT 55000
 
-#define SERVER "127.0.0.1:3306"
-#define USERNAME "root"
-#define PASSWORD ""
+const sf::IpAddress SERVER_IP = sf::IpAddress(127, 0, 0, 1);
 
+enum tipoPaquete
+{
+    HANDSHAKE, LOGIN, MOVIMIENTO
+};
 
+sf::Packet& operator >> (sf::Packet& packet, tipoPaquete& tipo) {
 
+    int temp;
+    packet >> temp;
+    tipo = static_cast<tipoPaquete>(temp);
 
-void ConnectDatabase(sql::Driver*& driver,sql::Connection*& con){
+    return packet;
+}
 
-
-    try {
-
-        driver = get_driver_instance();
-        con = driver->connect(SERVER, USERNAME, PASSWORD);
-        std::cout << "Connection done. " << std::endl;
-
-        
-
-
-
-    }
-    catch (sql::SQLException e) {
-
-        std::cout << "Could not connect to server. Error message: " << e.what() << std::endl;
-        
-
-
-    }
+void HandShake(sf::Packet data) {
+    std::string message;
+    data >> message;
+    std::cerr << "Mensaje recibido : " << message << std::endl;
 
 }
-void DisconnectDatabase(sql::Connection*& con){
 
-    con->close();
-
-    if (con->isClosed()) {
-
-        std::cout << "Connection close. " << std::endl;
-        delete con;
-    }
-    
-   
-}
 
 
 int main()
 {
 
-    sql::Driver* driver;
-    sql::Connection* con;
+ 
+    
+    sf::TcpSocket socket;
 
-    ConnectDatabase(driver, con);
-    DisconnectDatabase(con);
+    if (socket.connect(SERVER_IP, SERVER_PORT) != sf::Socket::Status::Done) {
+        std::cerr << "Error al conectar al servidor" << std::endl;
+    }
+
+    std::cout << "Cliente conectado al servidor" << std::endl;
+
+    sf::Packet packet;
+
+    if (socket.receive(packet) == sf::Socket::Status::Done) {
+
    
-    system("pause");
-    // exit(1);
+        tipoPaquete tipo;
 
+        packet >> tipo;
 
-
-    /*sf::RenderWindow window(sf::VideoMode({ 200, 200 }), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
-
-    while (window.isOpen())
-    {
-        while (const std::optional event = window.pollEvent())
+        switch (tipo)
         {
-            if (event->is<sf::Event::Closed>())
-                window.close();
+        case HANDSHAKE:
+            HandShake(packet);
+            break;
+        case LOGIN:
+            break;
+        case MOVIMIENTO:
+            break;
+        default:
+            break;
         }
+        
+        packet.clear();
 
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }*/
+    }
+    else {
+        std::cerr << "Error al recibir mensajes del servidor" << std::endl;
+    }
+
+    socket.disconnect();
+    
 }

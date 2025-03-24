@@ -1,10 +1,3 @@
-﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(531,5): warning MSB8028: El directorio intermedio (x64\Debug\) contiene archivos compartidos de otro proyecto (Parchis_TCP.vcxproj). Esto puede dar lugar a un comportamiento incorrecto de limpieza y recompilación.
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: El directorio intermedio (x64\Debug\) contiene archivos compartidos de otro proyecto (Parchis_TCP.vcxproj). Esto puede dar lugar a un comportamiento incorrecto de limpieza y recompilación.
   main.cpp
-C:\Users\mmayo\Desktop\AA2_Parchis_TCP\Dependencies\SFML\include\SFML\System\Exception.hpp(41,47): warning C4275: se ha utilizado una interfaz no de DLL class 'std::runtime_error' como base para la interfaz DLL class 'sf::Exception'
-  (compilando archivo de origen "main.cpp")
-  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include\stdexcept(100,19):
-  vea la declaración de 'std::runtime_error'
-  C:\Users\mmayo\Desktop\AA2_Parchis_TCP\Dependencies\SFML\include\SFML\System\Exception.hpp(41,23):
-  vea la declaración de 'sf::Exception'
-  
-C:\Users\mmayo\Desktop\AA2_Parchis_TCP\Client_Parchis_TCP\main.cpp(6,10): error C1083: No se puede abrir el archivo incluir: 'cppconn/driver.h': No such file or directory
+C:\Users\mmayo\OneDrive\Escriptori\Parchis_TCP\Client_TCP\main.cpp(5,10): error C1083: No se puede abrir el archivo incluir: 'SFML/Graphics.hpp': No such file or directory
