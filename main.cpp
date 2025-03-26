@@ -7,6 +7,7 @@
 #define SERVER_PORT 55000
 
 const sf::IpAddress SERVER_IP = sf::IpAddress(127, 0, 0, 1);
+//const sf::IpAddress SERVER_IP = sf::IpAddress(10,40,2,183); -- PC Profe clase
 
 enum tipoPaquete
 {
@@ -48,7 +49,28 @@ int main()
         std::cout << "Cliente conectado al servidor" << std::endl;
 
         while (gameLoop) {
-            sf::sleep(sf::seconds(1));
+            //sf::sleep(sf::seconds(1));
+
+            std::string message;
+            std::cout << "Inserta mensaje para el servidor, -1 para salir " << std::endl;
+            std::cin >> message;
+
+            if (message == "-1") {
+                std::cout<<"Desconectado... " << std::endl;
+                gameLoop = false;
+            }
+            else {
+                sf::Packet packet;
+                packet << message;
+                if (socket.send(packet) != sf::Socket::Status::Done) {
+                    std::cerr << "Error al enviar mensajes del servidor" << std::endl;
+                } else {
+                    std::cout << "Mensaje Enviado correctamente " << std::endl;
+                }
+
+            }
+
+
         }
 
         socket.disconnect();
